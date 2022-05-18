@@ -235,14 +235,14 @@ let wall = {
 	}
 }*/
 
-console.log("intersection? " + linesIntersect(100,0,100,500,0,250,400,250))
+//console.log("intersection? " + linesIntersect(100,0,100,500,0,250,400,250))
 
 function renderChars() {
   canvas.width = canvas.width
   player.getKeys()
   player.render()
   borders.forEach(e => e.render())
-console.log(player.x, player.y, player.x, player.y+player.height, borders[2].x1, borders[2].y1, borders[2].x2, borders[2].y2)
+//console.log(player.x, player.y, player.x, player.y+player.height, borders[2].x1, borders[2].y1, borders[2].x2, borders[2].y2)
 
   //console.log("intersection? " + linesIntersect(player.x,0,100,500,borders[2].x1,borders[2].y1,borders[2].x2,borders[2].y2))
   window.requestAnimationFrame(renderChars);
@@ -268,7 +268,7 @@ function touchWall(boxX, boxY, boxWidth, boxHeight, wallX1, wallY1, wallX2, wall
   return(0)
 }
 
-console.log("known intersection? " + linesIntersect(100,0,100,500,0,250,400,250))
+//console.log("known intersection? " + linesIntersect(100,0,100,500,0,250,400,250))
 
 /*function linesIntersect(x1,y1,x2,y2,x3,y3,x4,y4){
   let a1= (y2-y1)/((x2-x1)+NZZ)
@@ -289,7 +289,7 @@ console.log("known intersection? " + linesIntersect(100,0,100,500,0,250,400,250)
   return ((valBW(Xsect1, x1, x2)&&valBW(Xsect1, x3, x4)&&valBW(Ysect1, y1, y2)&&valBW(Ysect1, y3, y4))||(valBW(Xsect2, x3, x4)&&valBW(Xsect2, x1, x2)&&valBW(Ysect2, y3, y4)&&valBW(Ysect2, y1, y2)))
 }*/
 
-console.log(linesIntersect(player.x, player.y, player.x, player.y+player.height, borders[2].x1, borders[2].y1, borders[2].x2, borders[2].y2))
+//console.log(linesIntersect(player.x, player.y, player.x, player.y+player.height, borders[2].x1, borders[2].y1, borders[2].x2, borders[2].y2))
 
 function linesIntersect(x1,y1,x2,y2,x3,y3,x4,y4){
   let a1= (y2-y1)/((x2-x1)+NZZ)

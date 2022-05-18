@@ -158,18 +158,25 @@ let player = {
 	}
   },
   render: function () {
-  let contact = false
-  borders.forEach(wall=>(contact = contact||touchWall(player.x+player.vx, player.y+player.vy, player.width, player.height, wall.x1, wall.y1, wall.x2, wall.y2)))
-  borders.forEach(wall=>(contact = contact||touchWall(Math.round(player.x+player.vx), Math.round(player.y+player.vy), Math.round(player.width), Math.round(player.height), wall.x1, wall.y1, wall.x2, wall.y2)))
+  let contactX = false
+  let contactY = false
+  //borders.forEach(wall=>(contact = contact||touchWall(player.x+player.vx, player.y+player.vy, player.width, player.height, wall.x1, wall.y1, wall.x2, wall.y2)))
+  borders.forEach(wall=>(contactX = contactX||(touchWall(Math.round(player.x+player.vx), Math.round(player.y+player.vy), Math.round(player.width), Math.round(player.height), wall.x1, wall.y1, wall.x2, wall.y2)))==(1))
+  borders.forEach(wall=>(contactX = contactX||(touchWall(Math.round(player.x+player.vx), Math.round(player.y+player.vy), Math.round(player.width), Math.round(player.height), wall.x1, wall.y1, wall.x2, wall.y2)))==(3))
+  borders.forEach(wall=>(contactY = contactY||(touchWall(Math.round(player.x+player.vx), Math.round(player.y+player.vy), Math.round(player.width), Math.round(player.height), wall.x1, wall.y1, wall.x2, wall.y2)))==(2))
+  borders.forEach(wall=>(contactY = contactY||(touchWall(Math.round(player.x+player.vx), Math.round(player.y+player.vy), Math.round(player.width), Math.round(player.height), wall.x1, wall.y1, wall.x2, wall.y2)))==(4))
 //contact = touchWall(player.x+player.vx, player.y+player.vy, player.width, player.height, borders[0].x1, borders[0].y1, borders[0].x2, borders[0].y2)
 //console.log(contact)
   //if (!(touchWall(player.x+player.vx, player.y+player.vy, player.width, player.height, wall.x1, wall.y1, wall.x2, wall.y2))){
-  if (!contact){
-	player.y += player.vy;
-	player.x += player.vx;
-	}else{
-   		player.y -= player.vy///(Math.abs(player.vy));
-		player.x -= player.vx///Math.abs(player.vx);
+  if (!contactX){
+	  player.x += player.vx;
+  }else{
+    player.x -= player.vx
+  }
+  if (!contactY){
+	  player.y += player.vy;
+  }else{
+   	player.y -= player.vy///(Math.abs(player.vy));
 	}
 	if (this.imageSrc==""){
 	//console.log("draw box")
@@ -246,19 +253,19 @@ window.requestAnimationFrame(renderChars);
 function touchWall(boxX, boxY, boxWidth, boxHeight, wallX1, wallY1, wallX2, wallY2){
   if (linesIntersect(boxX, boxY, boxX+boxWidth, boxY, wallX1, wallY1, wallX2, wallY2)){
 	console.log("top")
-	return true
+	return(1)
   }else if (linesIntersect(boxX+boxWidth, boxY, boxX+boxWidth, boxY+boxHeight, wallX1, wallY1, wallX2, wallY2)){
 	console.log("right")
-	return true
+	return(2)
   }else if (linesIntersect(boxX, boxY+boxHeight, boxX+boxWidth, boxY+boxHeight, wallX1, wallY1, wallX2, wallY2)){
 	console.log("bottom")
-	return true
+	return(3)
   }else if (linesIntersect(boxX, boxY, boxX, boxY+boxHeight, wallX1, wallY1, wallX2, wallY2)){
    console.log("left")
-   return true
+   return(4)
   }
   //console.log("No more Da Wall")
-  return false
+  return(0)
 }
 
 console.log("known intersection? " + linesIntersect(100,0,100,500,0,250,400,250))

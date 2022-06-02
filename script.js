@@ -62,45 +62,6 @@ let player = {
     }
   },
   render: function () {
-    /*this.x += this.vx;
-  let contact = false
-  borders.forEach(wall=>(contact = contact||touchWall(Math.round(player.x+player.vx), Math.round(player.y+player.vy), Math.round(player.width), Math.round(player.height), wall.x1, wall.y1, wall.x2, wall.y2)))
-    if(contact){
-      if(this.vx>0){
-        do {
-          this.x-=1
-          contact = false
-          borders.forEach(wall=>(contact = contact||touchWall(Math.round(player.x+player.vx), Math.round(player.y+player.vy), Math.round(player.width), Math.round(player.height), wall.x1, wall.y1, wall.x2, wall.y2)))
-        } while(contact)
-      }else{
-        do {
-          this.x+=1
-          contact = false
-          borders.forEach(wall=>(contact = contact||touchWall(Math.round(player.x+player.vx), Math.round(player.y+player.vy), Math.round(player.width), Math.round(player.height), wall.x1, wall.y1, wall.x2, wall.y2)))
-        } while(contact)
-      }
-      this.vx=0-(this.vx/2)
-    }
-        
-	this.y += this.vy;
-  contact = false
-  borders.forEach(wall=>(contact = contact||touchWall(Math.round(player.x+player.vx), Math.round(player.y+player.vy), Math.round(player.width), Math.round(player.height), wall.x1, wall.y1, wall.x2, wall.y2)))
-    if(contact){
-      if(this.vy>0){
-        do {
-          this.y-=1
-          contact = false
-          borders.forEach(wall=>(contact = contact||touchWall(Math.round(player.x+player.vx), Math.round(player.y+player.vy), Math.round(player.width), Math.round(player.height), wall.x1, wall.y1, wall.x2, wall.y2)))
-        } while(contact)
-      }else{
-        do {
-          this.y+=1
-          contact = false
-          borders.forEach(wall=>(contact = contact||touchWall(Math.round(player.x+player.vx), Math.round(player.y+player.vy), Math.round(player.width), Math.round(player.height), wall.x1, wall.y1, wall.x2, wall.y2)))
-        } while(contact)
-      }
-      this.vy=0-(this.vy/2)
-    }*/
     this.y += this.vy;
     let contact = false;
     borders.forEach(
@@ -109,9 +70,9 @@ let player = {
           contact ||
           touchWall(
             Math.round(player.x + player.vx),
-            Math.round((player.y + player.vy)+(2*player.height/3)),
+            Math.round(player.y + player.vy + (2 * player.height) / 3),
             Math.round(player.width),
-            Math.round(player.height/3),
+            Math.round(player.height / 3),
             wall.x1,
             wall.y1,
             wall.x2,
@@ -130,9 +91,9 @@ let player = {
           contact ||
           touchWall(
             Math.round(player.x + player.vx),
-            Math.round((player.y + player.vy)+(2*player.height/3)),
+            Math.round(player.y + player.vy + (2 * player.height) / 3),
             Math.round(player.width),
-            Math.round(player.height/3),
+            Math.round(player.height / 3),
             wall.x1,
             wall.y1,
             wall.x2,
@@ -153,7 +114,6 @@ let player = {
         player.height
       );
     } else {
-      //ctx.drawImage(document.getElementById("playerImg"),player.x-player.x+(canvas.width/2-(player.width/2)), player.y-player.y+(canvas.height/2-(player.height/2)), player.width, player.height);
       let img = new Image();
       img.src = this.imageSrc;
       if (img.complete) {
@@ -170,8 +130,6 @@ let player = {
           this.width,
           this.height
         );
-        //console.log(Math.floor(animationFrameIndex/(60/this.frameRate))%(img.width/this.frameWidth)*this.frameWidth)
-        //ctx.drawImage(img,player.x-player.x+(canvas.width/2-(player.width/2)), player.y-player.y+(canvas.height/2-(player.height/2)), player.width, player.height)
       }
       //https://stackoverflow.com/a/21625083
       //Thank ******* GOD that this ************ exists!!!
@@ -181,7 +139,7 @@ let player = {
       //*try it twice*
       //THAT WORKS
       //*put it in a loop*
-      //MF WHY
+      //** WHY
       //So I try a new method
       //I'll load the image into an invisible img tag and pull from there
       //that works
@@ -194,10 +152,6 @@ let player = {
       //clicks first SO link
       //************ IT EXPLAINS WHY IT WASN'T **** WORKING BEFOOOOORE
       //AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-      /*
-    img.onload = function() {
-      ctx.drawImage(img,player.x-player.x+(canvas.width/2-(player.width/2)), player.y-player.y+(canvas.height/2-(player.height/2)), player.width, player.height)
-    }*/
     }
   },
 };
@@ -219,14 +173,13 @@ function Handheld(
   this.frameHeight = frameHeight;
   this.renderedWidth = renderedWidth;
   this.renderedHeight = renderedHeight;
-  this.imageSrc = imageSrc; //have an index that incrments every time the windows requent animation frma is run
+  this.imageSrc = imageSrc;
   this.name = name;
   this.frameRate = frameRate;
   this.render = function () {
     let img = new Image();
     img.src = this.imageSrc;
     if (img.complete) {
-      //console.log(img,Math.floor(animationFrameIndex/(60/this.frameRate))%(img.width/this.frameWidth)*this.frameWidth,0,this.frameWidth,this.frameHeight,player.x-player.x+(canvas.width/2-(player.width/2))+this.relativeX, player.y-player.y+(canvas.height/2-(player.height/2))+this.relativeY, this.renderedWidth, this.renderedHeight)
       ctx.drawImage(
         img,
         (Math.floor(animationFrameIndex / (60 / this.frameRate)) %
@@ -289,8 +242,6 @@ let flashlight = {
         0,
         2 * Math.PI
       );
-      //ctx.arc(this.xCenter, this.yCenter, (this.size*(canvas.width/2)), 0, 2 * Math.PI);
-      //console.log(this.flickerSize*Math.abs(Math.sin(animationFrameIndex/this.flickerRate)))
       ctx.rect(canvas.width, 0, -1 * canvas.width, canvas.height);
       ctx.fill();
 
@@ -310,13 +261,9 @@ let flashlight = {
           1 -
           this.fadeOff,
         "black"
-      ); //
-      //console.log(this.fadeOff*(1+Math.sin(animationFrameIndex/this.flickerRate))/4+1-this.fadeOff)
+      );
       ctx.fillStyle = grd;
       ctx.beginPath();
-      //ctx.arc(canvas.width/2, canvas.height/2, (this.size*(canvas.width/2))+5, 0, 2 * Math.PI);
-      //console.log(this.size*(canvas.width/2))-(this.flickerSize*Math.abs(Math.sin(animationFrameIndex/this.flickerRate)))
-      //console.log((this.size*(canvas.width/2))+1-(this.flickerSize*Math.abs(Math.sin(animationFrameIndex/this.flickerRate))))
       ctx.arc(
         canvas.width / 2,
         canvas.height / 2,
@@ -344,10 +291,10 @@ function Wall(x1, y1, x2, y2, color) {
   this.y2 = y2;
   this.color = color;
   this.render = function () {
-    if (this.color!=="#"){
-    ctx.strokeStyle = this.color;
-    }else{
-      ctx.strokeStyle = "rgba(0, 0, 0, 0)"
+    if (this.color !== "#") {
+      ctx.strokeStyle = this.color;
+    } else {
+      ctx.strokeStyle = "rgba(0, 0, 0, 0)";
     }
     let scale = wallScale;
     ctx.moveTo(
@@ -364,39 +311,10 @@ function Wall(x1, y1, x2, y2, color) {
 }
 
 let borders = [];
-const wallScale = 100
+const wallScale = 100;
 //TODO: REMEMBER TO CHANGE THE SCALE
 //I CANNOT STRESS THIS ENOUGH
 //WHEN YOU MAKE A NEW MAP, REMEBER TO LOAD THE SCALE
-
-/*borders.push(new Wall(0, 0, 31, 0, "#FF0000"));
-borders.push(new Wall(31, 0, 31, 31, "#FF0000"));
-borders.push(new Wall(31, 31, 0, 31, "#FF0000"));
-borders.push(new Wall(0, 31, 0, 0, "#FF0000"));
-
-borders.push(new Wall(3, 0, 3, 15, "#FF0000"));
-borders.push(new Wall(3, 15, 13, 15, "#FF0000"));
-borders.push(new Wall(13, 15, 13, 12, "#FF0000"));
-borders.push(new Wall(13, 12, 11, 12, "#FF0000"));
-borders.push(new Wall(8, 12, 6, 12, "#FF0000"));
-borders.push(new Wall(6, 12, 6, 9, "#FF0000"));
-borders.push(new Wall(6, 9, 16, 9, "#FF0000"));
-borders.push(new Wall(16, 9, 16, 15, "#FF0000"));
-borders.push(new Wall(6, 9, 6, 3, "#FF0000"));
-borders.push(new Wall(6, 3, 28, 3, "#FF0000"));
-borders.push(new Wall(28, 3, 28, 28, "#FF0000"));
-borders.push(new Wall(9, 6, 25, 6, "#FF0000"));
-borders.push(new Wall(25, 6, 25, 28, "#FF0000"));
-borders.push(new Wall(25, 28, 3, 28, "#FF0000"));
-borders.push(new Wall(3, 28, 3, 18, "#FF0000"));
-borders.push(new Wall(3, 18, 19, 18, "#FF0000"));
-borders.push(new Wall(19, 18, 19, 9, "#FF0000"));
-borders.push(new Wall(22, 9, 22, 23, "#FF0000"));
-borders.push(new Wall(22, 21, 6, 21, "#FF0000"));
-borders.push(new Wall(6, 23, 22, 23, "#FF0000"));
-borders.push(new Wall(22, 25, 6, 25, "#FF0000"));
-borders.push(new Wall(6, 25, 6, 23, "#FF0000"));*/
-
 
 borders.push(new Wall(0, 8.3, 1.2, 4.5, "#"));
 borders.push(new Wall(1.2, 4.5, 1.6, 4.7, "#"));
@@ -423,33 +341,53 @@ borders.push(new Wall(9.8, 8.3, 0, 8.3, "#"));
 let newBackground = new Background(
   1000,
   840,
-  775,
-  200,
-  500,
-  700,
+  [new PortalPoint(775, 200, 1, 700, 500)],
   0,
   "https://cdn.glitch.global/cf3d5119-1db8-4359-89ae-64ec2566a331/bedroom.png?v=1653515776746"
 );
 
-function Background(width, height, portalX, portalY, playerStartX, playerStartY, bgIndex, src) {
+function Background(
+  width,
+  height,
+  portalsList,
+  bgIndex,
+  src
+) {
   this.width = width;
   this.height = height;
-  this.portalX = portalX;
-  this.portalY = portalY;
-  this.playerStartX = playerStartX;
-  this.playerStartY = playerStartY;
+  this.portalsList = portalsList
   this.bgIndex = bgIndex;
   this.src = src;
+  this.checkPoints = function(){
+    for (var i=0;i<this.portalsList.length;i++){
+      if (playerOccupiesPoint(player.x,player.y,player.width,player.height,this.portalsList[i].portalX,this.portalsList[i].portalY)){
+          return([this.portalsList[i].newMap, this.portalsList[i].newX, this.portalsList[i].newY])
+      }
+    }
+    return(0)
+  }
+
   this.render = function () {
     let img = new Image();
     img.src = this.src;
-    if (img.complete){
-      /*0 - player.x + (canvas.width / 2 - player.width / 2),
-      0 - player.y + (canvas.height / 2 - player.height / 2)*/
-      ctx.drawImage(img, 0 - player.x + (canvas.width / 2 - player.width / 2), 0 - player.y + (canvas.height / 2 - player.height / 2), this.width, this.height);
-      //console.log(img.src);
+    if (img.complete) {
+      ctx.drawImage(
+        img,
+        0 - player.x + (canvas.width / 2 - player.width / 2),
+        0 - player.y + (canvas.height / 2 - player.height / 2),
+        this.width,
+        this.height
+      );
     }
-  }
+  };
+}
+
+function PortalPoint(portalX, portalY, newMap, newX, newY){
+  this.portalX = portalX
+  this.portalY = portalY
+  this.newMap = newMap
+  this.newX = newX
+  this.newY = newY
 }
 
 let jumped = false;
@@ -471,11 +409,6 @@ jumpscare();
 function drawJumpScare(frameWidth, frameHeight, frameRate, src) {
   let img = new Image();
   img.src = src;
-  /*if (img.complete){
-      let drawnHeight = (canvas.width*img.height)/img.width
-      ctx.drawImage(img,0,(canvas.height-drawnHeight)/2,canvas.width, drawnHeight)
-    }*/
-  //console.log("works till here 0")
   let maxSize = Math.max(frameWidth, frameHeight);
   let renderW = 0;
   let renderH = 0;
@@ -522,7 +455,6 @@ async function renderJumpScareFrames(
   canvasH
 ) {
   for (var i = 0; i < frames; i++) {
-    //ctx.drawImage(img, 0, 0, 640, 360, 0, 0, 200, 200)
     ctx.drawImage(
       img,
       i * frameWidth,
@@ -534,8 +466,6 @@ async function renderJumpScareFrames(
       canvasW,
       canvasH
     );
-    //console.log(img, i*frameWidth, 0, frameWidth, frameHeight, 0, (canvas.height-renderH)/2, renderW, renderH)
-    //console.log(Math.floor(i/(60/frameRate))%(img.width/frameWidth)*frameWidth)
     await wait(1000 / frameRate);
   }
 }
@@ -548,63 +478,129 @@ let animationFrameIndex = 0;
 function renderChars() {
   canvas.width = canvas.width;
   ctx.fillStyle = "black";
-ctx.fillRect(0, 0, canvas.width, canvas.height);
-  if (playerOccupiesPoint(player.x, player.y, player.width, player.height, newBackground.portalX, newBackground.portalY)){
-    if (newBackground.bgIndex==0){
-      borders=[]
-      borders.push(new Wall(0, 8.3, 0, 7.1, "#"));
-borders.push(new Wall(0, 7.1, 0.7, 6.6, "#"));
-borders.push(new Wall(0.7, 6.6, 0.7, 5.5, "#"));
-borders.push(new Wall(0.7, 5.5, 1.7, 5, "#"));
-borders.push(new Wall(1.7, 5, 1.7, 5.9, "#"));
-borders.push(new Wall(1.7, 5.9, 2, 5.8, "#"));
-borders.push(new Wall(2, 5.8, 2.7, 5.3, "#"));
-borders.push(new Wall(2.7, 5.3, 2.7, 4.6, "#"));
-borders.push(new Wall(2.7, 4.6, 3, 4.4, "#"));
-borders.push(new Wall(3, 4.4, 3, 4.9, "#"));
-borders.push(new Wall(3, 4.9, 3.3, 4.9, "#"));
-borders.push(new Wall(3.3, 4.9, 3.55, 4.7, "#"))
-borders.push(new Wall(3.55, 4.7, 3.55, 4.2, "#"));
-borders.push(new Wall(3.55, 4.2, 3.7, 4.1, "#"));
-borders.push(new Wall(3.7, 4.1, 3.7, 4.5, "#"));
-borders.push(new Wall(3.7, 4.5, 3.8, 4.5, "#"));
-borders.push(new Wall(3.8, 4.5, 4, 4.3, "#"));
-borders.push(new Wall(4, 4.3, 4.3, 4.3, "#"));
-borders.push(new Wall(4.3, 4.3, 4.3, 4, "#"));
-borders.push(new Wall(4.3, 4, 5.9, 4, "#"));
-borders.push(new Wall(5.9, 4, 5.9, 4.3, "#"));
-borders.push(new Wall(5.9, 4.3, 6.2, 4.3, "#"));
-borders.push(new Wall(6.2, 4.3, 6.5, 4.5, "#"));
-borders.push(new Wall(6.5, 4.5, 6.6, 4.6, "#"));
-borders.push(new Wall(6.6, 4.6, 6.6, 4, "#"));
-borders.push(new Wall(6.6, 4, 6.8, 4.1, "#"));
-borders.push(new Wall(6.8, 4.1, 6.8, 4.7, "#"));
-borders.push(new Wall(6.8, 4.7, 7.2, 5, "#"));
-borders.push(new Wall(7.2, 5, 7.5, 5, "#"));
-borders.push(new Wall(7.5, 5, 7.5, 4.3, "#"));
-borders.push(new Wall(7.5, 4.3, 8, 4.6, "#"));
-borders.push(new Wall(8, 4.6, 8, 5.6, "#"));
-borders.push(new Wall(8, 5.6, 9.1, 6.5, "#"));
-borders.push(new Wall(9.1, 6.5, 9.4, 6.5, "#"));
-borders.push(new Wall(9.4, 6.5, 9.4, 5, "#"));
-borders.push(new Wall(9.4, 5, 10, 5.3, "#"));
-borders.push(new Wall(10, 5.3, 10, 8.3, "#"));
-borders.push(new Wall(10, 8.3, 0, 8.3, "#"));
-      
-newBackground = new Background(
-  1000,
-  830,
-  775,
-  500,
-  365,
-  460,
-  1,
-  "https://cdn.glitch.global/cf3d5119-1db8-4359-89ae-64ec2566a331/hallway?v=1654090154156"
-);
-    }
-      player.x = newBackground.playerStartX
-      player.y = newBackground.playerStartY
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  let newBackgroundToSet = newBackground.bgIndex
+  if (newBackground.checkPoints!==0){
+    newBackgroundToSet = newBackground.checkPoints[0]
+    player.x = newBackground.checkPoints[1]
+    player.y = newBackground.checkPoints[2]
   }
+  if (newBackgroundToSet!==newBackground.bgIndex){//Here is where I will define each map
+        if (newBackgroundToSet == 1) {
+      borders = [];
+      borders.push(new Wall(0, 8.3, 0, 7.1, "#"));
+      borders.push(new Wall(0, 7.1, 0.7, 6.6, "#"));
+      borders.push(new Wall(0.7, 6.6, 0.7, 5.5, "#"));
+      borders.push(new Wall(0.7, 5.5, 1.7, 5, "#"));
+      borders.push(new Wall(1.7, 5, 1.7, 5.9, "#"));
+      borders.push(new Wall(1.7, 5.9, 2, 5.8, "#"));
+      borders.push(new Wall(2, 5.8, 2.7, 5.3, "#"));
+      borders.push(new Wall(2.7, 5.3, 2.7, 4.6, "#"));
+      borders.push(new Wall(2.7, 4.6, 3, 4.4, "#"));
+      borders.push(new Wall(3, 4.4, 3, 4.9, "#"));
+      borders.push(new Wall(3, 4.9, 3.3, 4.9, "#"));
+      borders.push(new Wall(3.3, 4.9, 3.55, 4.7, "#"));
+      borders.push(new Wall(3.55, 4.7, 3.55, 4.2, "#"));
+      borders.push(new Wall(3.55, 4.2, 3.7, 4.1, "#"));
+      borders.push(new Wall(3.7, 4.1, 3.7, 4.5, "#"));
+      borders.push(new Wall(3.7, 4.5, 3.8, 4.5, "#"));
+      borders.push(new Wall(3.8, 4.5, 4, 4.3, "#"));
+      borders.push(new Wall(4, 4.3, 4.3, 4.3, "#"));
+      borders.push(new Wall(4.3, 4.3, 4.3, 4, "#"));
+      borders.push(new Wall(4.3, 4, 5.9, 4, "#"));
+      borders.push(new Wall(5.9, 4, 5.9, 4.3, "#"));
+      borders.push(new Wall(5.9, 4.3, 6.2, 4.3, "#"));
+      borders.push(new Wall(6.2, 4.3, 6.5, 4.5, "#"));
+      borders.push(new Wall(6.5, 4.5, 6.6, 4.6, "#"));
+      borders.push(new Wall(6.6, 4.6, 6.6, 4, "#"));
+      borders.push(new Wall(6.6, 4, 6.8, 4.1, "#"));
+      borders.push(new Wall(6.8, 4.1, 6.8, 4.7, "#"));
+      borders.push(new Wall(6.8, 4.7, 7.2, 5, "#"));
+      borders.push(new Wall(7.2, 5, 7.5, 5, "#"));
+      borders.push(new Wall(7.5, 5, 7.5, 4.3, "#"));
+      borders.push(new Wall(7.5, 4.3, 8, 4.6, "#"));
+      borders.push(new Wall(8, 4.6, 8, 5.6, "#"));
+      borders.push(new Wall(8, 5.6, 9.1, 6.5, "#"));
+      borders.push(new Wall(9.1, 6.5, 9.4, 6.5, "#"));
+      borders.push(new Wall(9.4, 6.5, 9.4, 5, "#"));
+      borders.push(new Wall(9.4, 5, 10, 5.3, "#"));
+      borders.push(new Wall(10, 5.3, 10, 8.3, "#"));
+      borders.push(new Wall(10, 8.3, 0, 8.3, "#"));
+
+      newBackground = new Background(
+        1000,
+        830,
+        [new PortalPoint(775, 500, 2, 365, 400)],
+        1,
+        "https://cdn.glitch.global/cf3d5119-1db8-4359-89ae-64ec2566a331/hallway?v=1654090154156"
+      );
+    }
+  }
+  /*if (
+    playerOccupiesPoint(
+      player.x,
+      player.y,
+      player.width,
+      player.height,
+      newBackground.portalX,
+      newBackground.portalY
+    )
+  ) {
+    if (newBackground.bgIndex == 0) {
+      borders = [];
+      borders.push(new Wall(0, 8.3, 0, 7.1, "#"));
+      borders.push(new Wall(0, 7.1, 0.7, 6.6, "#"));
+      borders.push(new Wall(0.7, 6.6, 0.7, 5.5, "#"));
+      borders.push(new Wall(0.7, 5.5, 1.7, 5, "#"));
+      borders.push(new Wall(1.7, 5, 1.7, 5.9, "#"));
+      borders.push(new Wall(1.7, 5.9, 2, 5.8, "#"));
+      borders.push(new Wall(2, 5.8, 2.7, 5.3, "#"));
+      borders.push(new Wall(2.7, 5.3, 2.7, 4.6, "#"));
+      borders.push(new Wall(2.7, 4.6, 3, 4.4, "#"));
+      borders.push(new Wall(3, 4.4, 3, 4.9, "#"));
+      borders.push(new Wall(3, 4.9, 3.3, 4.9, "#"));
+      borders.push(new Wall(3.3, 4.9, 3.55, 4.7, "#"));
+      borders.push(new Wall(3.55, 4.7, 3.55, 4.2, "#"));
+      borders.push(new Wall(3.55, 4.2, 3.7, 4.1, "#"));
+      borders.push(new Wall(3.7, 4.1, 3.7, 4.5, "#"));
+      borders.push(new Wall(3.7, 4.5, 3.8, 4.5, "#"));
+      borders.push(new Wall(3.8, 4.5, 4, 4.3, "#"));
+      borders.push(new Wall(4, 4.3, 4.3, 4.3, "#"));
+      borders.push(new Wall(4.3, 4.3, 4.3, 4, "#"));
+      borders.push(new Wall(4.3, 4, 5.9, 4, "#"));
+      borders.push(new Wall(5.9, 4, 5.9, 4.3, "#"));
+      borders.push(new Wall(5.9, 4.3, 6.2, 4.3, "#"));
+      borders.push(new Wall(6.2, 4.3, 6.5, 4.5, "#"));
+      borders.push(new Wall(6.5, 4.5, 6.6, 4.6, "#"));
+      borders.push(new Wall(6.6, 4.6, 6.6, 4, "#"));
+      borders.push(new Wall(6.6, 4, 6.8, 4.1, "#"));
+      borders.push(new Wall(6.8, 4.1, 6.8, 4.7, "#"));
+      borders.push(new Wall(6.8, 4.7, 7.2, 5, "#"));
+      borders.push(new Wall(7.2, 5, 7.5, 5, "#"));
+      borders.push(new Wall(7.5, 5, 7.5, 4.3, "#"));
+      borders.push(new Wall(7.5, 4.3, 8, 4.6, "#"));
+      borders.push(new Wall(8, 4.6, 8, 5.6, "#"));
+      borders.push(new Wall(8, 5.6, 9.1, 6.5, "#"));
+      borders.push(new Wall(9.1, 6.5, 9.4, 6.5, "#"));
+      borders.push(new Wall(9.4, 6.5, 9.4, 5, "#"));
+      borders.push(new Wall(9.4, 5, 10, 5.3, "#"));
+      borders.push(new Wall(10, 5.3, 10, 8.3, "#"));
+      borders.push(new Wall(10, 8.3, 0, 8.3, "#"));
+
+      newBackground = new Background(
+        1000,
+        830,
+        775,
+        500,
+        365,
+        460,
+        1,
+        "https://cdn.glitch.global/cf3d5119-1db8-4359-89ae-64ec2566a331/hallway?v=1654090154156"
+      );
+    }
+    player.x = newBackground.playerStartX;
+    player.y = newBackground.playerStartY;
+  }*/
   newBackground.render();
   player.getKeys();
   player.render();
@@ -612,20 +608,25 @@ newBackground = new Background(
   handheldItemsList.forEach((e) => e.render());
   flashlight.render();
   if (!jumped) {
-    //drawJumpScare(720, 360, 12, "https://cdn.glitch.global/cf3d5119-1db8-4359-89ae-64ec2566a331/monsterArray.png?v=1653442922115")
     window.requestAnimationFrame(renderChars);
   }
-  //console.log("rendering")
   animationFrameIndex++;
 }
 renderChars();
-function playerOccupiesPoint(playerX, playerY, playerWidth, playerHeight, qx, qy){
-  if (valBW(qx, playerX, playerX+playerWidth)){
-    if (valBW(qy, playerY, playerY+playerHeight)){
-      return true
+function playerOccupiesPoint(
+  playerX,
+  playerY,
+  playerWidth,
+  playerHeight,
+  qx,
+  qy
+) {
+  if (valBW(qx, playerX, playerX + playerWidth)) {
+    if (valBW(qy, playerY, playerY + playerHeight)) {
+      return true;
     }
   }
-  return false
+  return false;
 }
 function touchWall(
   boxX,
@@ -694,66 +695,6 @@ function touchWall(
   return false;
 }
 
-/*function linesIntersect(x1, y1, x2, y2, x3, y3, x4, y4) {
-  let a1 = (y2 - y1) / (x2 - x1 + NZZ);
-  let b1 = y1 - a1 * x1;
-  let a2 = (y4 - y3) / (x4 - x3 + NZZ);
-  let b2 = y3 - a2 * x3;
-  let Xsect1 = Math.round((b2 - b1) / (a1 - a2 + NZZ));
-  let Ysect1 = a1 * Xsect1 + b1;
-
-  let a3 = (y4 - y3) / (x4 - x3 + NZZ);
-  let b3 = y3 - a3 * x3;
-  let a4 = (y2 - y1) / (x2 - x1 + NZZ);
-  let b4 = y1 - a4 * x1;
-  let Xsect2 = Math.round((b4 - b3) / (a3 - a4 + NZZ));
-  let Ysect2 = a3 * Xsect2 + b3;
-
-  return (
-    (valBW(Xsect1, x1, x2) &&
-      valBW(Xsect1, x3, x4) &&
-      valBW(Ysect1, y1, y2) &&
-      valBW(Ysect1, y3, y4)) ||
-    (valBW(Xsect2, x3, x4) &&
-      valBW(Xsect2, x1, x2) &&
-      valBW(Ysect2, y3, y4) &&
-      valBW(Ysect2, y1, y2))
-  );
-}*/
-
-function valBW(Qval, val1, val2) {
-  if (val1 < val2) {
-    return val1 <= Qval && Qval <= val2;
-  } else {
-    return val2 <= Qval && Qval <= val1;
-  }
-}
-/*const NZZ = 0.000000000001
-function linesIntersect(x1, y1, x2, y2, x3, y3, x4, y4) {
-    if (determinant(x1, y1, x2, y2, x3, y3, x4, y4)==0) {
-        return false
-    }
-  let a1 = (y2 - y1) / (x2 - x1 + NZZ);
-  let b1 = y1 - a1 * x1;
-  let a2 = (y4 - y3) / (x4 - x3 + NZZ);
-  let b2 = y3 - a2 * x3;
-  let Xsect1 = Math.round((b2 - b1) / (a1 - a2 + NZZ));
-    if ((x1==x2)||(x3==x4)){
-        let Ysect1 = a1 * Xsect1 + b1
-        let Ysect2 = a2 * Xsect1 + b2
-        return ((valBW(Ysect1, y1, y2) && valBW(Ysect1, y3, y4))&&(valBW(Ysect2, y1, y2) && valBW(Ysect2, y3, y4)))
-    }
-  return (valBW(Xsect1, x1, x2) && valBW(Xsect1, x3, x4))
-}
-
-function determinant(x1, y1, x2, y2, x3, y3, x4, y4) {
-    let A = x2-x1
-    let B = y2-y1
-    let C = x4-x3
-    let D = y4-y3
-    return((A*D)-(B*C))
-}
-
 function valBW(Qval, val1, val2) {
   if (val1 < val2) {
     return val1 <= Qval && Qval <= val2;
@@ -762,10 +703,7 @@ function valBW(Qval, val1, val2) {
   }
 }
 
-console.log(linesIntersect(5,0, 5,6, 0,0, 10,10))
-console.log(linesIntersect(0,0, 10,10, 5,0, 5,6))*/
-
-function linesIntersect(a,b,c,d,p,q,r,s) {
+function linesIntersect(a, b, c, d, p, q, r, s) {
   var det, gamma, lambda;
   det = (c - a) * (s - q) - (r - p) * (d - b);
   if (det === 0) {
@@ -773,12 +711,12 @@ function linesIntersect(a,b,c,d,p,q,r,s) {
   } else {
     lambda = ((s - q) * (r - a) + (p - r) * (s - b)) / det;
     gamma = ((b - d) * (r - a) + (c - a) * (s - b)) / det;
-    return (0 < lambda && lambda < 1) && (0 < gamma && gamma < 1);
+    return 0 < lambda && lambda < 1 && 0 < gamma && gamma < 1;
   }
-};
-/*(danioel)
-*    Title: Intersection code
-*    Author: SFox, D
-*    Date: 2014
-*    Code version: 2.0
-*    Availability: https://stackoverflow.com/a/24392281*/
+}
+/*
+ *    Title: Intersection code
+ *    Author: SFox, D
+ *    Date: 2014
+ *    Code version: 2.0
+ *    Availability: https://stackoverflow.com/a/24392281*/

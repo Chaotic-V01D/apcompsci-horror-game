@@ -221,7 +221,7 @@ let flashlight = {
   on: true,
   xCenter: canvas.width / 2,
   yCenter: canvas.height / 2,
-  size: 0.5,
+  size: 0.75,
   fadeOff: 0.5,
   flickerRate: 100,
   flickerSize: 50,
@@ -316,6 +316,8 @@ const wallScale = 100;
 //I CANNOT STRESS THIS ENOUGH
 //WHEN YOU MAKE A NEW MAP, REMEBER TO LOAD THE SCALE
 
+let newBackground = 0
+
 borders.push(new Wall(0, 8.3, 1.2, 4.5, "#"));
 borders.push(new Wall(1.2, 4.5, 1.6, 4.7, "#"));
 borders.push(new Wall(1.6, 4.7, 3.35, 4, "#"));
@@ -338,7 +340,7 @@ borders.push(new Wall(8.8, 6.5, 9, 5, "#"));
 borders.push(new Wall(9, 5, 9.8, 8.3, "#"));
 borders.push(new Wall(9.8, 8.3, 0, 8.3, "#"));
 
-let newBackground = new Background(
+newBackground = new Background(
   1000,
   840,
   [new PortalPoint(775, 200, 1, 700, 500)],
@@ -346,26 +348,42 @@ let newBackground = new Background(
   "https://cdn.glitch.global/cf3d5119-1db8-4359-89ae-64ec2566a331/bedroom.png?v=1653515776746"
 );
 
-function Background(
-  width,
-  height,
-  portalsList,
-  bgIndex,
-  src
-) {
+function Background(width, height, portalsList, bgIndex, src) {
+  //console.log("new BG created w index " + bgIndex)
   this.width = width;
   this.height = height;
-  this.portalsList = portalsList
+  this.portalsList = portalsList;
   this.bgIndex = bgIndex;
   this.src = src;
-  this.checkPoints = function(){
-    for (var i=0;i<this.portalsList.length;i++){
-      if (playerOccupiesPoint(player.x,player.y,player.width,player.height,this.portalsList[i].portalX,this.portalsList[i].portalY)){
-          return([this.portalsList[i].newMap, this.portalsList[i].newX, this.portalsList[i].newY])
+  this.checkPoints = function () {
+    //When runn while the current background is the hallway, it is giving the wring result
+    //it is saying that the new background is the hallway instead of the bedroom
+    //console.log("portalsList length " + this.portalsList.length)
+    for (var i = 0; i < this.portalsList.length; i++) {
+      //console.log(this.portalsList[i])
+      if (
+        playerOccupiesPoint(
+          player.x,
+          player.y,
+          player.width,
+          player.height,
+          this.portalsList[i].portalX,
+          this.portalsList[i].portalY
+        )
+      ) {
+        console.log("woah there, thats an overlap!");
+        //console.log(this.portalsList)
+        //console.log(this.portalsList[i].newMap)
+        return [
+          this.portalsList[i].newMap,
+          this.portalsList[i].newX,
+          this.portalsList[i].newY,
+        ];
       }
     }
-    return(0)
-  }
+    //console.log("no overlap")
+    return 0;
+  };
 
   this.render = function () {
     let img = new Image();
@@ -382,12 +400,12 @@ function Background(
   };
 }
 
-function PortalPoint(portalX, portalY, newMap, newX, newY){
-  this.portalX = portalX
-  this.portalY = portalY
-  this.newMap = newMap
-  this.newX = newX
-  this.newY = newY
+function PortalPoint(portalX, portalY, newMap, newX, newY) {
+  this.portalX = portalX;
+  this.portalY = portalY;
+  this.newMap = newMap;
+  this.newX = newX;
+  this.newY = newY;
 }
 
 let jumped = false;
@@ -404,7 +422,7 @@ async function jumpscare() {
     "https://cdn.glitch.global/cf3d5119-1db8-4359-89ae-64ec2566a331/monsterArray.png?v=1653442922115"
   );
 }
-jumpscare();
+//jumpscare();
 
 function drawJumpScare(frameWidth, frameHeight, frameRate, src) {
   let img = new Image();
@@ -479,14 +497,50 @@ function renderChars() {
   canvas.width = canvas.width;
   ctx.fillStyle = "black";
   ctx.fillRect(0, 0, canvas.width, canvas.height);
-  let newBackgroundToSet = newBackground.bgIndex
-  if (newBackground.checkPoints!==0){
-    newBackgroundToSet = newBackground.checkPoints[0]
-    player.x = newBackground.checkPoints[1]
-    player.y = newBackground.checkPoints[2]
-  }
-  if (newBackgroundToSet!==newBackground.bgIndex){//Here is where I will define each map
-        if (newBackgroundToSet == 1) {
+  let newBackgroundToSet = newBackground.bgIndex;
+  let portalOverlap = newBackground.checkPoints();
+  if (portalOverlap !== 0) {
+    newBackgroundToSet = portalOverlap[0];
+    player.x = portalOverlap[1];
+    player.y = portalOverlap[2];
+    //Testing below with repositioning...?
+    console.log("the old background is " + newBackground.bgIndex);
+    console.log("new background index to set to: " + newBackgroundToSet);
+    if (newBackgroundToSet == 0) {
+      console.log("the new background is the bedroom");
+      borders = [];
+      borders.push(new Wall(0, 8.3, 1.2, 4.5, "#"));
+      borders.push(new Wall(1.2, 4.5, 1.6, 4.7, "#"));
+      borders.push(new Wall(1.6, 4.7, 3.35, 4, "#"));
+      borders.push(new Wall(3.35, 4, 3.35, 2.8, "#"));
+      borders.push(new Wall(3.35, 2.8, 6.75, 2.8, "#"));
+      borders.push(new Wall(6.75, 2.8, 7.3, 3, "#"));
+      borders.push(new Wall(7.3, 3, 7.4, 2.8, "#"));
+      borders.push(new Wall(7.3, 2.8, 7.4, 1.3, "#"));
+      borders.push(new Wall(7.4, 1.3, 8.1, 1.3, "#"));
+      borders.push(new Wall(8.1, 1.3, 8.1, 2.8, "#"));
+      borders.push(new Wall(8.1, 2.8, 8.45, 2.8, "#"));
+      borders.push(new Wall(8.45, 2.8, 8.9, 4.6, "#"));
+      borders.push(new Wall(8.9, 4.6, 8.3, 4.3, "#"));
+      borders.push(new Wall(8.3, 4.3, 6, 5.1, "#"));
+      borders.push(new Wall(6, 5.1, 5.6, 5.6, "#"));
+      borders.push(new Wall(5.6, 5.6, 5.6, 5.85, "#"));
+      borders.push(new Wall(5.6, 5.85, 7.8, 7.1, "#"));
+      borders.push(new Wall(7.8, 7.1, 8.8, 6.5, "#"));
+      borders.push(new Wall(8.8, 6.5, 9, 5, "#"));
+      borders.push(new Wall(9, 5, 9.8, 8.3, "#"));
+      borders.push(new Wall(9.8, 8.3, 0, 8.3, "#"));
+
+      newBackground = new Background(
+  1000,
+  840,
+  [new PortalPoint(775, 200, 1, 700, 500)],
+  0,
+  "https://cdn.glitch.global/cf3d5119-1db8-4359-89ae-64ec2566a331/bedroom.png?v=1653515776746"
+);
+      console.log(newBackground);
+    } else if (newBackgroundToSet == 1) {
+      console.log("the new background is the hallway");
       borders = [];
       borders.push(new Wall(0, 8.3, 0, 7.1, "#"));
       borders.push(new Wall(0, 7.1, 0.7, 6.6, "#"));
@@ -530,78 +584,45 @@ function renderChars() {
       newBackground = new Background(
         1000,
         830,
-        [new PortalPoint(775, 500, 2, 365, 400)],
+        [new PortalPoint(775, 525, 0, 775, 300), new PortalPoint(120, 615, 2, 740, 750)],
         1,
         "https://cdn.glitch.global/cf3d5119-1db8-4359-89ae-64ec2566a331/hallway?v=1654090154156"
       );
-    }
-  }
-  /*if (
-    playerOccupiesPoint(
-      player.x,
-      player.y,
-      player.width,
-      player.height,
-      newBackground.portalX,
-      newBackground.portalY
-    )
-  ) {
-    if (newBackground.bgIndex == 0) {
+      console.log("hallway bg");
+    } else if (newBackgroundToSet == 2) {
+      console.log("the new background is the playroom");
       borders = [];
-      borders.push(new Wall(0, 8.3, 0, 7.1, "#"));
-      borders.push(new Wall(0, 7.1, 0.7, 6.6, "#"));
-      borders.push(new Wall(0.7, 6.6, 0.7, 5.5, "#"));
-      borders.push(new Wall(0.7, 5.5, 1.7, 5, "#"));
-      borders.push(new Wall(1.7, 5, 1.7, 5.9, "#"));
-      borders.push(new Wall(1.7, 5.9, 2, 5.8, "#"));
-      borders.push(new Wall(2, 5.8, 2.7, 5.3, "#"));
-      borders.push(new Wall(2.7, 5.3, 2.7, 4.6, "#"));
-      borders.push(new Wall(2.7, 4.6, 3, 4.4, "#"));
-      borders.push(new Wall(3, 4.4, 3, 4.9, "#"));
-      borders.push(new Wall(3, 4.9, 3.3, 4.9, "#"));
-      borders.push(new Wall(3.3, 4.9, 3.55, 4.7, "#"));
-      borders.push(new Wall(3.55, 4.7, 3.55, 4.2, "#"));
-      borders.push(new Wall(3.55, 4.2, 3.7, 4.1, "#"));
-      borders.push(new Wall(3.7, 4.1, 3.7, 4.5, "#"));
-      borders.push(new Wall(3.7, 4.5, 3.8, 4.5, "#"));
-      borders.push(new Wall(3.8, 4.5, 4, 4.3, "#"));
-      borders.push(new Wall(4, 4.3, 4.3, 4.3, "#"));
-      borders.push(new Wall(4.3, 4.3, 4.3, 4, "#"));
-      borders.push(new Wall(4.3, 4, 5.9, 4, "#"));
-      borders.push(new Wall(5.9, 4, 5.9, 4.3, "#"));
-      borders.push(new Wall(5.9, 4.3, 6.2, 4.3, "#"));
-      borders.push(new Wall(6.2, 4.3, 6.5, 4.5, "#"));
-      borders.push(new Wall(6.5, 4.5, 6.6, 4.6, "#"));
-      borders.push(new Wall(6.6, 4.6, 6.6, 4, "#"));
-      borders.push(new Wall(6.6, 4, 6.8, 4.1, "#"));
-      borders.push(new Wall(6.8, 4.1, 6.8, 4.7, "#"));
-      borders.push(new Wall(6.8, 4.7, 7.2, 5, "#"));
-      borders.push(new Wall(7.2, 5, 7.5, 5, "#"));
-      borders.push(new Wall(7.5, 5, 7.5, 4.3, "#"));
-      borders.push(new Wall(7.5, 4.3, 8, 4.6, "#"));
-      borders.push(new Wall(8, 4.6, 8, 5.6, "#"));
-      borders.push(new Wall(8, 5.6, 9.1, 6.5, "#"));
-      borders.push(new Wall(9.1, 6.5, 9.4, 6.5, "#"));
-      borders.push(new Wall(9.4, 6.5, 9.4, 5, "#"));
-      borders.push(new Wall(9.4, 5, 10, 5.3, "#"));
-      borders.push(new Wall(10, 5.3, 10, 8.3, "#"));
+      borders.push(new Wall(0, 8.3, 0, 6.3, "#"));
+      borders.push(new Wall(0, 6.3, 0.85, 6.1, "#"));
+      borders.push(new Wall(0.85, 6.1, 0.85, 6.4, "#"));
+      borders.push(new Wall(0.85, 6.4, 1.7, 6.6, "#"));
+      borders.push(new Wall(1.7, 6.6, 3.3, 6, "#"));
+      borders.push(new Wall(3.3, 6, 3.3, 5.4, "#"));
+      borders.push(new Wall(3.3, 5.4, 5.1, 5, "#"));
+      borders.push(new Wall(5.1, 5, 5.8, 5.2, "#"));
+      borders.push(new Wall(5.8, 5.2, 4.8, 6.2, "#"));
+      borders.push(new Wall(4.8, 6.2, 4.8, 6.8, "#"));
+      borders.push(new Wall(4.8, 6.8, 6, 7, "#"));
+      borders.push(new Wall(6, 7, 6.6, 6.6, "#"));
+      borders.push(new Wall(6.6, 6.6, 7.6, 7.3, "#"));
+      borders.push(new Wall(7.6, 7.3, 9.5, 6.8, "#"));
+      borders.push(new Wall(9.5, 6.8, 9.5, 6.1, "#"));
+      borders.push(new Wall(9.5, 6.1, 10, 6.2, "#"));
+      borders.push(new Wall(10, 6.2, 10, 8.3, "#"));
       borders.push(new Wall(10, 8.3, 0, 8.3, "#"));
-
+      
       newBackground = new Background(
         1000,
         830,
-        775,
-        500,
-        365,
-        460,
+        [new PortalPoint(950, 800, 1, 160, 630)],
         1,
-        "https://cdn.glitch.global/cf3d5119-1db8-4359-89ae-64ec2566a331/hallway?v=1654090154156"
+        "https://cdn.glitch.global/cf3d5119-1db8-4359-89ae-64ec2566a331/playroom?v=1654265997147"
       );
     }
-    player.x = newBackground.playerStartX;
-    player.y = newBackground.playerStartY;
-  }*/
+  }
+  //console.log("bg pre render: " + newBackground.src)
   newBackground.render();
+  //console.log("bg post render: " + newBackground.bgIndex);
   player.getKeys();
   player.render();
   borders.forEach((e) => e.render());

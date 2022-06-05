@@ -344,15 +344,17 @@ newBackground = new Background(
   1000,
   840,
   [new PortalPoint(775, 200, 1, 700, 500)],
+  [new PickupPoint(350, 380, "red key", "https://cdn.glitch.global/cf3d5119-1db8-4359-89ae-64ec2566a331/redKey.png?v=1654404920320")],
   0,
   "https://cdn.glitch.global/cf3d5119-1db8-4359-89ae-64ec2566a331/bedroom.png?v=1653515776746"
 );
 
-function Background(width, height, portalsList, bgIndex, src) {
+function Background(width, height, portalsList, pickupList, bgIndex, src) {
   //console.log("new BG created w index " + bgIndex)
   this.width = width;
   this.height = height;
   this.portalsList = portalsList;
+  this.pickupList = pickupList;
   this.bgIndex = bgIndex;
   this.src = src;
   this.checkPoints = function () {
@@ -384,7 +386,28 @@ function Background(width, height, portalsList, bgIndex, src) {
     //console.log("no overlap")
     return 0;
   };
-
+  
+  this.checkPickup = function(){
+    for (var i = 0; i < this.pickupList.length; i++) {
+      if (
+        playerOccupiesPoint(
+          player.x,
+          player.y,
+          player.width,
+          player.height,
+          this.pickupList[i].pickupX,
+          this.pickupList[i].pickupY
+        )
+      ) {
+        if (!playerInventory.some(element=> element.itemName==this.pickupList[i].itemName)){
+        console.log("woah there, thats an overlap! I got me a new ITEM");
+          playerInventory.push(new InventoryItem(this.pickupList[i].itemName, 0.15, this.pickupList[i].src))
+        }
+      }
+    }
+    //console.log("no overlap")
+    return 0;
+  }
   this.render = function () {
     let img = new Image();
     img.src = this.src;
@@ -408,6 +431,33 @@ function PortalPoint(portalX, portalY, newMap, newX, newY) {
   this.newY = newY;
 }
 
+function PickupPoint(pickupX, pickupY, itemName, src){
+  this.pickupX = pickupX
+  this.pickupY = pickupY
+  this.itemName = itemName
+  this.src = src
+}
+
+function InventoryItem(itemName, scale, src){
+  this.itemName = itemName
+  this.scale = scale
+  this.src = src
+  this.render = function(inventoryIndex){
+    let img = new Image();
+    img.src = this.src;
+    if (img.complete) {
+      ctx.drawImage(
+        img,
+        64,
+        inventoryIndex*(this.scale*img.width+32)+64,
+        this.scale*img.width,
+        this.scale*img.height
+      );
+    }
+  }
+}
+let playerInventory = []
+
 let jumped = false;
 let jumpWait = Math.floor((10 * Math.random() + 20) * 1000);
 //jumpWait = 1
@@ -422,7 +472,7 @@ async function jumpscare() {
     "https://cdn.glitch.global/cf3d5119-1db8-4359-89ae-64ec2566a331/monsterArray.png?v=1653442922115"
   );
 }
-//jumpscare();
+jumpscare();
 
 function drawJumpScare(frameWidth, frameHeight, frameRate, src) {
   let img = new Image();
@@ -499,6 +549,13 @@ function renderChars() {
   ctx.fillRect(0, 0, canvas.width, canvas.height);
   let newBackgroundToSet = newBackground.bgIndex;
   let portalOverlap = newBackground.checkPoints();
+  let pickupOverlap = newBackground.checkPickup()
+  
+  /*for (var i=0;i<playerInventory.length;i++){
+    playerInventory[i].render(i)
+  }*/
+  playerInventory.forEach((inventoryItem, index)=> inventoryItem.render(index))
+  
   if (portalOverlap !== 0) {
     newBackgroundToSet = portalOverlap[0];
     player.x = portalOverlap[1];
@@ -535,6 +592,7 @@ function renderChars() {
   1000,
   840,
   [new PortalPoint(775, 200, 1, 700, 500)],
+  [new PickupPoint(310, 380, "red key", "https://cdn.glitch.global/cf3d5119-1db8-4359-89ae-64ec2566a331/redKey.png?v=1654404920320")],
   0,
   "https://cdn.glitch.global/cf3d5119-1db8-4359-89ae-64ec2566a331/bedroom.png?v=1653515776746"
 );
@@ -585,6 +643,7 @@ function renderChars() {
         1000,
         830,
         [new PortalPoint(775, 525, 0, 775, 300), new PortalPoint(120, 615, 2, 740, 750)],
+        [new PickupPoint(960, 700, "yellow key", "https://cdn.glitch.global/cf3d5119-1db8-4359-89ae-64ec2566a331/yellowKey.png?v=1654404937365")],
         1,
         "https://cdn.glitch.global/cf3d5119-1db8-4359-89ae-64ec2566a331/hallway?v=1654090154156"
       );
@@ -615,6 +674,7 @@ function renderChars() {
         1000,
         830,
         [new PortalPoint(950, 800, 1, 160, 630)],
+        [new PickupPoint(100, 625, "green key", "https://cdn.glitch.global/cf3d5119-1db8-4359-89ae-64ec2566a331/greenKey.png?v=1654404928746")],
         1,
         "https://cdn.glitch.global/cf3d5119-1db8-4359-89ae-64ec2566a331/playroom?v=1654265997147"
       );
@@ -628,6 +688,10 @@ function renderChars() {
   borders.forEach((e) => e.render());
   handheldItemsList.forEach((e) => e.render());
   flashlight.render();
+  
+  if (!jumped){
+  playerInventory.forEach((inventoryItem, index)=> inventoryItem.render(index))
+  }
   if (!jumped) {
     window.requestAnimationFrame(renderChars);
   }

@@ -726,7 +726,7 @@ function renderChars() {
       newBackground = new Background(
         1000,
         830,
-        [new PortalPoint(775, 525, 0, 775, 300), new PortalPoint(120, 615, 2, 740, 750),  new PortalPoint(510, 360, 3, 180, 180)],
+        [new PortalPoint(775, 525, 0, 775, 300), new PortalPoint(120, 615, 2, 740, 750),  new PortalPoint(510, 330, 3, 180, 180)],
         [new PickupPoint(960, 700, "yellow key", "https://cdn.glitch.global/cf3d5119-1db8-4359-89ae-64ec2566a331/yellowKey.png?v=1654404937365")],
          [new AnimPoint(434, 318, 50, 36, 154, 115, 1, "endingDoor", 
           "(playerOccupiesPoint(player.x,player.y,player.width,player.height,510,420)&&playerInventory.length>2)", 
